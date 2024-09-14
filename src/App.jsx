@@ -7,7 +7,10 @@ import React, { useState, useReducer } from "react";
 // action - 요구의 내용
 
 const App = () => {
+  const [number, setNumber] = useState(0);
+
   const reducer = (state, action) => {
+    console.log(action.payload);
     switch (action.type) {
       case "deposit":
         return state + action.payload;
@@ -17,32 +20,23 @@ const App = () => {
         return state;
     }
   };
-  const [number, setNumber] = useState(0);
-  // 0은 초기값으로 지정되어있음
+
   const [money, dispatch] = useReducer(reducer, 0);
+
   return (
     <div className="main">
       <h2>useReducer 은행에 오신것을 환영합니다</h2>
-      <p>잔고: {money}원</p>
       <input
         type="number"
-        value={number}
-        min="0"
+        step={1000}
+        min={0}
         onChange={(e) => setNumber(e.target.value)}
-        step="1000"
       />
-      <button
-        onClick={() => {
-          dispatch({ type: "deposit", payload: +number });
-        }}
-      >
-        예금
+      <p>잔고: {money}원</p>
+      <button onClick={() => dispatch({ type: "deposit", payload: +number })}>
+        입금
       </button>
-      <button
-        onClick={() => {
-          dispatch({ type: "withdraw", payload: +number });
-        }}
-      >
+      <button onClick={() => dispatch({ type: "withdraw", payload: +number })}>
         출금
       </button>
     </div>
